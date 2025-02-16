@@ -4,3 +4,4 @@ db/
 vendor/
 var/
 node_modules/
+inf_symfony/
