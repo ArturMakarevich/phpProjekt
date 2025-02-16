@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Log in!</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E8EDF2;
+            font-family: Arial, sans-serif;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 9px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="email"],
+        .form-group input[type="password"] {
+            padding: 10px;
+            font-size: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 9px;
+        }
+
+        button.btn {
+            padding: 12px 24px;
+            width: 100%;
+            font-size: 18px;
+            box-sizing: border-box;
+            background-color: #FF6347;
+            color: white;
+            border: 1px;
+            cursor: pointer;
+
+        }
+        button.btn:hover{
+            background-color: #FF0000;
+        }
+
+        .form-container,
+        .form-group,
+        button.btn {
+            width: 500px;
+            border-radius: 9px;
+        }
+        #logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        #logo:hover {
+            color: #FF6347;
+        }
+        
+
+    </style>
+</head>
+<body>
+<div class="form-container">
+
+    {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+
+    {% if app.user %}
+        <div class="mb-3">
+            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+        </div>
+    {% endif %}
+
+    <a href="{{ path('games') }}" id="logo">Games of Chance</a>
+
+    <h1 class="h3 mb-3 font-weight-normal">Log in</h1>
+    <form method="post">
+        <div class="form-group">
+            <label for="username">Email</label>
+            <input type="email" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="email" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
+        </div>
+
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <button class="btn btn-lg btn-primary" type="submit">Log in</button>
+    </form>
+</div>
+</body>
+</html>

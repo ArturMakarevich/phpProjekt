@@ -1,0 +1,6 @@
+db/
+.env.local
+.env.*.local
+vendor/
+var/
+node_modules/

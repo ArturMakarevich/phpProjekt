@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games of Chance</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #E8EDF2;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+        #header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+        #logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: black;
+        }
+        #logo:hover {
+            color: #32CD32;
+        }
+        #buttons {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-left: auto;
+        }
+        .outButton, .logButton, .regButton {
+            display: inline-block;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 9px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .regButton {
+            background-color: #32CD32;
+            color: white;
+            margin-right: 20px;
+        }
+        .regButton:hover {
+            background-color: #388E3C;
+        }
+        .logButton, .outButton {
+            background-color: transparent;
+            border: none;
+            color: black;
+        }
+        .logButton:hover, .outButton:hover {
+            background-color: transparent;
+            color: #32CD32;
+        }
+        .container {
+            text-align: center;
+            margin-top: 50px;
+            position: relative;
+            border-radius: 20px;
+            padding: 20px;
+        }
+        .number-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin-top: 100px;
+        }
+        .number-box {
+            width: 200px;
+            height: 200px;
+            background-color: #32CD32;
+            border: 8px solid #388E3C;
+            border-radius: 20px;
+            font-size: 72px;
+            font-weight: bold;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .retry-button {
+            display: inline-block;
+            padding: 20px 40px;
+            background-color: #32CD32;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-top: 150px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+        .retry-button:hover {
+            background-color: #388E3C;
+        }
+        .previous-results {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            border-radius: 19px;
+            border: 2px solid #388E3C;
+        }
+        .result-item {
+            color: red;
+            list-style-type: decimal;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <a href="{{ path('games') }}" id="logo">{{'Games of Chance'|trans}}</a>
+            <div id="buttons">
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="outButton">{{'Log out'|trans}}</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="logButton">{{'Log in'|trans}}</a>
+                    <a href="{{ path('app_register') }}" class="regButton">{{'Register'|trans}}</a>
+                {% endif %}
+            </div>
+        </div>
+        <h2>{{'Generate Random Number'|trans}}</h2>
+        <div class="number-container">
+            <div class="number-box">{{ randomNumber }}</div>
+        </div>
+        <h3>{{'Your result'|trans}} {{ randomNumber }}</h3>
+        <a href="{{ path('games_random_number') }}" class="retry-button"><span>{{'Generate Number'|trans}}</span></a>
+        
+        {% if app.user %}
+            <div class="previous-results">
+                <h3 style="color: #4CAF50;">{{'Previous 10 results:'|trans}}</h3>
+                <ul class="results-list">
+                    {% set results = allResults|slice(0, 10)|reverse %}
+                    {% for result in results %}
+                        <li class="result-item">{{ result.getNumresult }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div class="previous-results">
+                <h3 style="color: #FF6600;">{{'Previous 10 results'|trans}}</h3>
+                <p style="color: red;">{{'This section is available only for authorized users.'|trans}}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

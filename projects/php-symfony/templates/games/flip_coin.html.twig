@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games of Chance</title>
+    <style>
+        @keyframes flip-coin {
+            0% {
+                transform: rotateY(0deg);
+            }
+            50% {
+                transform: rotateY(180deg);
+            }
+            100% {
+                transform: rotateY(0deg);
+            }
+        }
+        @keyframes change-text {
+            0%, 25% {
+                opacity: 1;
+            }
+            50%, 100% {
+                opacity: 1;
+            }
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #E8EDF2;
+            font-family: Arial, sans-serif;
+        }
+        #container {
+            width: 80%;
+            margin: 0 auto;
+            padding-top: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            border-radius: 20px;
+            margin-top: 20px;
+        }
+        #header {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 0;
+        }
+        #logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: black;
+        }
+        #logo:hover {
+            color: #FFA500;
+        }
+        #buttons {
+            display: flex;
+            align-items: center;
+            position: relative;
+            margin-left: auto;
+        }
+        .outButton, .logButton, .regButton {
+            display: inline-block;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 9px;
+            text-align: center;
+            font-size: 18px;
+        }
+        .regButton {
+            background-color: #FFA500;
+            color: white;
+            margin-right: 20px;
+        }
+        .regButton:hover {
+            background-color: #ff8533;
+        }
+        .logButton, .outButton {
+            background-color: transparent;
+            border: none;
+            color: black;
+        }
+        .logButton:hover, .outButton:hover {
+            background-color: transparent;
+            color: #ff8533;
+        }
+        #coin-container {
+            display: inline-block;
+            position: relative;
+            margin-top: 50px;
+        }
+        #coin {
+            width: 300px;
+            height: 300px;
+            border: 8px solid #ff8533;
+            border-radius: 50%;
+            animation: flip-coin 0.5s;
+            position: relative;
+            background-color: #FFA500;
+        }
+        #coin::before {
+            content: attr(data-result);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 48px;
+            font-weight: bold;
+            animation: change-text 1.5s 3;
+            color: white;
+        }
+        .retry-button {
+            display: inline-block;
+            padding: 20px 40px;
+            background-color: #FFA500;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-top: 100px;
+            font-size: 24px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+            white-space: nowrap;
+        }
+        .retry-button:hover {
+            background-color: #ff8533;
+        }
+        #previous-results {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            border-radius: 19px;
+            border: 2px solid #b8860b;
+        }
+        #li {
+            color: red;
+            list-style-type: decimal;
+        }
+        .coin:active {
+            transform: scale(1.1);
+        }
+        .result {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <a href="{{ path('games') }}" id="logo">{{'Games of Chance'|trans}}</a>
+            <div id="buttons">
+                {% if app.user %}
+                    <a href="{{ path('app_logout') }}" class="outButton">{{'Log out'|trans}}</a>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="logButton">{{'Log in'|trans}}</a>
+                    <a href="{{ path('app_register') }}" class="regButton">{{'Register'|trans}}</a>
+                {% endif %}
+            </div>
+        </div>
+        <h2>{{'Flip the Coin'|trans}}</h2>
+        <div id="coin-container">
+            <div id="coin" class="coin" data-result="{{ coinResult }}"></div>
+        </div>
+        <h3 class="result">{{'Your result'|trans}} {{ coinResult }}</h3>
+        <a href="{{ path('games_flip_coin') }}" class="retry-button"><span>{{'Throw coin'|trans}}</span></a>
+        
+        {% if app.user %}
+            <div id="previous-results">
+                <h3 style="color: #FF6600;">{{'Previous 10 results'|trans}}</h3>
+                <ul id="results-list">
+                    {% set results = allResults|slice(0, 10)|reverse %}
+                    {% for result in results %}
+                        <li id="li">{{ result.getResult() }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% else %}
+            <div id="previous-results">
+                <h3 style="color: #FF6600;">{{'Previous 10 results'|trans}}</h3>
+                <p style="color: red;">{{'This section is available only for authorized users.'|trans}}</p>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

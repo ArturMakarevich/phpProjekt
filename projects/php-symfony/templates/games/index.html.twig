@@ -1,0 +1,420 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games of Chance</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #E8EDF2;
+            font-family: Arial, sans-serif;
+        }
+
+        #container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        #logo {
+            font-weight: bold;
+            font-size: 24px;
+            margin: 10px 0;
+        }
+
+        #buttons {
+            display: flex;
+            align-items: center;
+            position: relative;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .regButton, .logButton, .outButton, .langButton {
+            display: inline-block;
+            padding: 10px 20px; 
+            text-decoration: none;
+            border-radius: 9px;
+            text-align: center;
+            font-size: 16px;
+            margin: 5px;
+        }
+
+        .regButton {
+            background-color: #FF6347;
+            color: white;
+        }
+
+        .regButton:hover {
+            background-color: #FF0000;
+        }
+
+        .logButton, .outButton, .langButton {
+            background-color: transparent;
+            border: none;
+            color: black;
+            font-size: 16px; 
+        }
+
+        .logButton:hover, .outButton:hover, .langButton:hover {
+            background-color: transparent;
+            color: #FF6347;
+        }
+
+        #games {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            margin-top: 50px;
+            overflow-y: visible;
+            position: relative;
+        }
+
+        .game-box {
+            width: 90%;
+            max-width: 350px;
+            height: auto;
+            min-height: 350px;
+            background-color: #b4c4d5;
+            border-radius: 9px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            z-index: 0;
+        }
+
+        .game-box:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+
+        .game-box:hover .play-button {
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .b1:hover .play-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .b2:hover .play-button {
+            background-color: #FFA500;
+            color: white;
+        }
+
+        .b3:hover .play-button {
+            background-color: #32CD32;
+            color: white;
+        }
+
+        .game-logo {
+            width: 70px;
+            height: 70px;
+            background-color: #7a7a7a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 9px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .ellipse {
+            position: absolute;
+            background-color: white;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+        }
+
+        .ellipse1 {
+            top: 15%;
+            left: 10%;
+        }
+
+        .ellipse2 {
+            top: 15%;
+            right: 10%;
+        }
+
+        .ellipse3 {
+            bottom: 15%;
+            left: 10%;
+        }
+
+        .ellipse4 {
+            bottom: 15%;
+            right: 10%;
+        }
+
+        .ellipse5 {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .game-title {
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+        }
+
+        .game-description {
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+            background-color: #BDC3C7;
+            padding: 10px;
+            border-radius: 9px;
+            margin: 10px 0;
+            flex-grow: 1;
+        }
+
+        .play-button {
+            margin: 15px auto;
+            padding: 10px 20px;
+            background-color: #d5dee7;
+            border-radius: 9px;
+            text-decoration: none;
+            color: black;
+            transition: background-color 0.3s, color 0.3s;
+            width: 80%;
+        }
+
+        .symbol {
+            color: white;
+            font-size: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .inf-symbol {
+            color: white;
+            font-size: 50px;
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .language-selector {
+            position: relative;
+            margin: 5px;
+        }
+
+        #language-toggle {
+            display: none;
+        }
+
+        label {
+            padding: 10px 20px; 
+            border-radius: 9px;
+            color: black;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 9px;
+            padding: 10px;
+            right: 0;
+        }
+
+        #language-toggle:checked + label + .dropdown-content {
+            display: block;
+            margin-top: 10px;
+        }
+
+        .dropdown-content a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: black;
+            font-size: 16px; 
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+
+        .user-dropdown {
+            position: relative;
+            display: inline-block;
+            margin: 5px;
+        }
+
+        #profile-toggle {
+            display: none;
+        }
+
+        .profile-label {
+            padding: 10px 20px; 
+            border-radius: 9px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #FF6347
+        }
+        
+        .profile-label:hover {
+            background-color: #FF0000; 
+        }
+
+        .user-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 120px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+            border-radius: 9px;
+            padding: 10px;
+            right: 0;
+            margin-top: 10px;
+        }
+
+        #profile-toggle:checked + .profile-label + .user-dropdown-content {
+            display: block;
+        }
+
+        .user-dropdown-content a {
+            display: block;
+            padding: 8px 16px;
+            text-decoration: none;
+            color: black;
+            font-size: 16px; 
+        }
+
+        .user-dropdown-content a:hover {
+            background-color: #f1f1f1;
+        }
+        @media (min-width: 768px) {
+            #games {
+                flex-direction: row;
+                flex-wrap: nowrap;
+                justify-content: center;
+                align-items: stretch;
+                margin-top: 250px;
+                position: relative;
+            }
+
+            .game-box {
+                width: 28%;
+                height: 350px;
+                margin: 0 20px;
+                max-width: none;
+            }
+            
+            .symbol, .inf-symbol {
+                font-size: 80px;
+            }
+        }
+
+        @media (max-width: 767px) {
+            #games {
+                margin-top: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <div id="logo">{{ 'Games of Chance'|trans }}</div>
+            <div id="buttons">
+                {% if app.user %}
+                    <div class="user-dropdown">
+                        <input type="checkbox" id="profile-toggle">
+                        <label for="profile-toggle" class="profile-label">{{ app.user.username }}</label>
+                        <div class="user-dropdown-content">
+                            <a href="{{path('app_profile')}}">{{ 'Change user data'|trans}}</a>
+                            <a href="{{ path('app_logout') }}">{{ 'Log out'|trans }}</a>
+                        </div>
+                    </div>  
+                    <div class="user-dropdown-content">
+                        {% if "ROLE_ADMIN" in app.user.roles %}
+                            <a href="{{ path('admin_dashboard') }}">{{ 'AdminDashboard'|trans }}</a>
+                            <a href="{{ path('app_logout') }}">{{ 'Log out'|trans }}</a>
+
+                        {% endif %}
+                    </div>
+                {% else %}
+                    <a href="{{ path('app_login') }}" class="logButton">{{ 'Log in'|trans }}</a>
+                    <a href="{{ path('app_register') }}" class="regButton">{{ 'Register'|trans }}</a>
+                {% endif %}
+                <div class="language-selector">
+                    <input type="checkbox" id="language-toggle">
+                    <label for="language-toggle">{{ app.request.locale }}</label>
+                    <div class="dropdown-content">
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'_locale': 'en'})) }}">English</a>
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'_locale': 'pl'})) }}">Polski</a>
+                        <a href="{{ path(app.request.attributes.get('_route'), app.request.query.all | merge({'_locale': 'be'})) }}">Беларуская</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="games">
+            <a href="{{ path('games_roll_dice') }}" class="game-box b1">
+                <div class="game-logo">
+                    <div class="ellipse ellipse1"></div>
+                    <div class="ellipse ellipse2"></div>
+                    <div class="ellipse ellipse3"></div>
+                    <div class="ellipse ellipse4"></div>
+                    <div class="ellipse5"></div>
+                </div>
+                <div class="game-title">{{ 'Roll Dice'|trans }}</div>
+                <div class="game-description">{{ 'Roll the dice and immerse yourself in the fascinating world of numbers, where each value reveals new opportunities and challenges! Test your luck and discover what surprises await you in this thrilling adventure!'|trans }}</div>
+                <div class="play-button">{{ 'Play'|trans }}</div>
+            </a>
+            <a href="{{ path('games_flip_coin') }}" class="game-box b2">
+                <div class="game-logo">
+                    <div class="symbol">&#63;</div>
+                </div>
+                <div class="game-title">{{ 'Flip Coin'|trans }}</div>
+                <div class="game-description">{{ 'Try to predict how the coin will land and test your intuition and luck! Each coin flip is a chance to uncover something new and exciting. Let fate decide your next move'|trans }}</div>
+                <div class="play-button">{{ 'Play'|trans }}</div>
+            </a>
+            <a href="{{ path('games_random_number') }}" class="game-box b3">
+                <div class="game-logo">
+                    <div class="inf-symbol">&#8734;</div>
+                </div>
+                <div class="game-title">{{ 'Random Number'|trans }}</div>
+                <div class="game-description">{{ 'Receive a random number and delve into its mysteries! Each number carries secrets and possibilities. Explore this realm and discover the amazing revelations that await you around every corner!'|trans }}</div>
+                <div class="play-button">{{ 'Play'|trans }}</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

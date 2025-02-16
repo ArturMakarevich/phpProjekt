@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Profile</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #E8EDF2;
+            font-family: Arial, sans-serif;
+            position: relative;
+        }
+
+        .flash-container {
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .flash-notice {
+            width: 50%;
+            background-color: #000000;
+            color: white;
+            text-align: center;
+            padding: 10px 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        .flash-notice a {
+            color: white;
+            text-decoration: none;
+            margin-left: 20px;
+        }
+
+        .flash-notice a:hover {
+            text-decoration: underline;
+        }
+
+        #logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 9px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-top: 100px;
+        }
+
+        .form-group {
+            width: 100%;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="email"] {
+            padding: 10px;
+            font-size: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 9px;
+        }
+
+        .form-group input[readonly] {
+            background-color: #f0f0f0;
+            cursor: not-allowed;
+            border: 1px solid #ccc;
+        }
+
+        button.btn {
+            padding: 12px 24px;
+            width: 100%;
+            font-size: 18px;
+            box-sizing: border-box;
+            background-color: #FF6347;
+            color: white;
+            border: 1px;
+            cursor: pointer;
+        }
+
+        .form-container, .form-group, button.btn {
+            width: 500px;
+            border-radius: 9px;
+        }
+
+        button.btn:hover {
+            background-color: #FF0000; 
+        }
+    </style>
+</head>
+<body>
+    <div class="flash-container">
+        {% for message in app.flashes('notice') %}
+            <div class="flash-notice">
+                <p>{{ message | raw }}</p>
+                <a href="{{ path('games') }}">Back to Homepage</a>
+            </div>
+        {% endfor %}
+        {% for message in app.flashes('error') %}
+            <div class="flash-notice">
+                <p>{{ message | raw }}</p>
+                <a href="{{ path('app_profile', {'_locale': app.request.locale}) }}">Continue Editing</a>
+            </div>
+        {% endfor %}
+    </div>
+
+    <a href="{{ path('games') }}" id="logo">{{"Games of Chance"|trans}}</a>
+
+    <div class="form-container">
+        <h1>Your Profile</h1>
+
+        <form method="post" action="{{ path('app_profile', {'_locale': app.request.locale}) }}">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}">
+            </div>
+            <div class="form-group">
+                <label for="password">New Password</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('profile_update') }}">
+            <button type="submit" class="btn">Save changes</button>
+        </form>
+    </div>
+</body>
+</html>

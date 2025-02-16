@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Admin Dashboard</h1>
+    
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Email</th>
+                    <th>Coin Flip</th>
+                    <th>Random Number</th>
+                    <th>Roll Dice</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in statistics %}
+                    <tr>
+                        <td>{{ stat.user.username }}</td>
+                        <td>{{ stat.user.email }}</td>
+                        <td>
+                            Total: {{ stat.games.coinFlip.total }}<br>
+                            {% if stat.games.coinFlip.results|length > 0 %}
+                                Last results: {{ stat.games.coinFlip.results|slice(-5)|join(', ') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            Total: {{ stat.games.randomNumber.total }}<br>
+                            {% if stat.games.randomNumber.results|length > 0 %}
+                                Last results: {{ stat.games.randomNumber.results|slice(-5)|join(', ') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            Total: {{ stat.games.rollDice.total }}<br>
+                            {% if stat.games.rollDice.results|length > 0 %}
+                                Last results: {{ stat.games.rollDice.results|slice(-5)|join(', ') }}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

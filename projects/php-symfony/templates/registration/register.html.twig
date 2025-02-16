@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #E8EDF2;
+            font-family: Arial, sans-serif;
+            position: relative;
+            margin-top: 20px;
+
+        }
+
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background-color: white;
+            padding: 30px;
+            border-radius: 9px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            width: 10%;
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="password"],
+        .form-group input[type="email"],
+        .form-group input[type="checkbox"] {
+            padding: 10px;
+            font-size: 20px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 9px;
+        }
+
+        .form-group input[type="checkbox"] {
+            width: auto;
+            transform: scale(1.5);
+        }
+        #logo {
+            font-weight: bold;
+            font-size: 24px;
+            color: black;
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+        }
+        #logo:hover {
+            color: #FF6347;
+        }
+
+        button.btn {
+            padding: 12px 24px;
+            width: 100%;
+            font-size: 18px;
+            box-sizing: border-box;
+            background-color: #FF6347;
+            color: white;
+            border: 1px;
+            cursor:pointer;
+        }
+
+        .form-container, .form-group, button.btn {
+            width: 500px;
+            border-radius: 9px;
+        }
+        button.btn:hover{
+            background-color: #FF0000; 
+        }
+
+        .flash-message {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-color: #E8EDF2;
+            color: black;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            font-size: 30px;
+            padding-top: 20vh; 
+            padding-bottom: 20vh; 
+        }
+
+        .flash-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .flash-buttons a {
+            padding: 10px 20px;
+            text-decoration: none;
+            color: white;
+            background-color: #FF6347;
+            border-radius: 5px;
+        }
+
+        .flash-buttons a:hover {
+            background-color: #FF0000;
+        }
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999; 
+            display: none; 
+        }
+       
+    </style>
+</head>
+<body>
+    {% for message in app.flashes('success') %}
+        <div class="flash-message">
+            <p>{{ message | raw }}</p>
+            <div class="flash-buttons">
+                <a href="{{ path('games') }}">Back to Homepage</a>
+                <a href="{{ path('app_login') }}">Login</a>
+            </div>
+        </div>
+    {% endfor %}
+
+    <body class="{% if app.flashes('success')|length > 0 %}blur{% endif %}">
+
+    <a href="{{ path('games') }}" id="logo">{{"Games of Chance"|trans}}</a>
+
+    <div class="form-container">
+
+        <h1>Register</h1>
+
+        {{ form_start(registrationForm) }}
+             <div class="form-group">
+                {{ form_row(registrationForm.username) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(registrationForm.email) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(registrationForm.confirmPassword, {
+                    label: 'Confirm Password'
+                }) }}
+            <div class="form-group">
+                {{ form_row(registrationForm.agreeTerms) }}
+            </div>
+
+            <button type="submit" class="btn">Register</button>
+        {{ form_end(registrationForm) }}
+    </div>
+</body>
+</html>
